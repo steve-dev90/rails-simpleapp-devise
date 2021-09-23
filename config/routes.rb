@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
-  root "articles#index"
+
+  root 'static_pages#home'
 
   resources :articles
+  devise_for :users
 end
 
 
