@@ -26,18 +26,13 @@ class ArticlesController < ApplicationController
 
   def edit
     @article = Article.find(params[:id])
-
-    if current_user_article
-      @article
-    else
-      redirect_to @article
-    end
+    authorize @article
   end
 
   def update
     @article = Article.find(params[:id])
-
-    if @article.update(article_params) && current_user_article
+    authorize @article
+    if @article.update(article_params)
       redirect_to @article
     else
       render :edit
@@ -46,17 +41,10 @@ class ArticlesController < ApplicationController
 
   def destroy
     @article = Article.find(params[:id])
+    authorize @article
 
-    if current_user_article
-      @article.destroy
-      redirect_to root_path
-    else
-      redirect_to @article
-    end
-  end
-
-  def current_user_article
-    @article.user_id == current_user.id
+    @article.destroy
+    redirect_to root_path
   end
 
   private
